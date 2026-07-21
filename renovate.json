@@ -20,9 +20,6 @@
       "automerge": true
     },
     {
-      "matchManagers": [
-        "mise"
-      ],
       "matchPackageNames": [
         "python"
       ],
