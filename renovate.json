@@ -9,12 +9,14 @@
         "minor",
         "patch"
       ],
+      "autoApprove": true,
       "automerge": true
     },
     {
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
+      "autoApprove": true,
       "automerge": true
     },
     {
