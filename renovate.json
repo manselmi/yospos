@@ -3,9 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "lockFileMaintenance": {
-    "enabled": true
-  },
   "packageRules": [
     {
       "matchUpdateTypes": [
@@ -33,22 +30,14 @@
       "automerge": false
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "enabled": true,
-      "automerge": true
-    },
-    {
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
       "enabled": true,
       "automerge": true
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
