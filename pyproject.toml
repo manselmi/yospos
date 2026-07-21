@@ -1,0 +1,272 @@
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml
+# https://packaging.python.org/en/latest/specifications/pyproject-toml
+
+
+[build-system]
+build-backend = 'uv_build'
+requires = [
+  'uv-build ~= 0.11.30',
+]
+
+
+[dependency-groups]
+dev = [
+  { include-group = 'lint' },
+  { include-group = 'test' },
+  { include-group = 'tox' },
+]
+empty = []  # for tox envs in which nothing need be installed
+lint = [
+  'mypy >= 2.3.0',
+  'ruff >= 0.15.22',
+]
+test = [
+  'ansi2html >= 1.9.2',
+  'coverage [toml] >= 7.15.2',
+  'junitparser >= 5.0.1',
+  'pytest >= 9.1.1',
+  'pytest-cov >= 7.1.0',
+  'pytest-html >= 4.2.0',
+]
+tox = [
+  'tox-uv-bare >= 1.36.0',
+]
+
+
+[project]
+name = 'yospos'
+version = '0.1.0'
+description = 'YOSPOS'
+readme = 'README.md'
+requires-python = '~= 3.14.0'
+authors = [
+  { name = 'Mike Anselmi', email = 'git@manselmi.com' },
+]
+scripts = { yospos = 'manselmi.yospos.app:app' }
+dependencies = [
+  'typer >= 0.27.0',
+]
+
+
+[tool.coverage.html]
+directory = '.reports/coverage.html'
+show_contexts = true
+skip_covered = false
+skip_empty = false
+
+[tool.coverage.paths]
+source = [
+  'src',
+  '*/site-packages',
+]
+
+[tool.coverage.report]
+include_namespace_packages = true
+show_missing = true
+skip_covered = true
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.xml]
+output = '.reports/coverage.xml'
+
+
+[tool.mypy]
+allow_redefinition = true
+enable_incomplete_feature = [
+  'PreciseTupleTypes',
+]
+install_types = false
+mypy_path = 'src'
+namespace_packages = true
+native_parser = true
+packages = [
+  'manselmi',
+]
+python_version = '3.14'  # https://github.com/python/mypy/issues/19349
+strict = true
+warn_unreachable = true
+
+
+[tool.pytest]
+addopts = [
+  '-r', 'a',
+  '--import-mode=importlib',
+  '--showlocals',
+  '--verbosity=2',
+]
+consider_namespace_packages = true
+strict = true
+
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+preview = true
+
+[tool.ruff.lint]
+future-annotations = true
+ignore = [
+  'ANN',      # mypy handles our type annotations
+  'COM812',   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'COM819',   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'CPY',      # not publishing publicly
+  'D1',       # docstrings are optional
+  'E111',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'E114',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'E117',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'ERA',      # do not remove commented-out code
+  'ISC001',   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'ISC002',   # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'PLR0913',  # https://docs.astral.sh/ruff/rules/too-many-arguments
+  'Q000',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'Q001',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'Q002',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'Q003',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  'W191',     # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+]
+select = ['ALL']
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = [
+  'manselmi',
+]
+
+[tool.ruff.lint.per-file-ignores]
+'__init__.py' = [
+  'F401',  # https://docs.astral.sh/ruff/rules/unused-import
+]
+'tests/**/*.py' = [
+  'INP001',  # https://docs.astral.sh/ruff/rules/implicit-namespace-package
+  'S101',  # https://docs.astral.sh/ruff/rules/assert
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = 'pep257'
+
+
+[tool.tox]
+env_list = [
+  'ruff',
+  'mypy',
+  'clean',
+  'py314',
+  'report',
+]
+labels.lint = [
+  'ruff',
+  'mypy',
+]
+labels.test = [
+  'clean',
+  'py314',
+  'report',
+]
+
+[tool.tox.env.clean]
+allowlist_externals = [
+  'find',
+]
+commands = [
+  [
+    'find', '--', '.', '-mindepth', '1', '-maxdepth', '1',
+    '-type', 'd', '-name', '.reports', '-exec', 'rm', '-r', '--', '\{}', '+', '-o',
+    '-type', 'f', '(', '-name', '.coverage', '-o', '-name', '.coverage.*', ')', '-delete',
+  ],
+]
+dependency_groups = []
+depends = []
+only_groups = [
+  'empty',
+]
+package = 'skip'
+set_env = {}
+
+[tool.tox.env.mypy]
+commands = [
+  ['mypy'],
+]
+dependency_groups = [
+  'lint',
+]
+depends = []
+package = 'skip'
+set_env = {}
+
+[tool.tox.env.report]
+allowlist_externals = [
+  'find',
+]
+commands = [
+  ['junitparser', 'merge', '--glob', '--', '.reports/xunit-py*.xml', '.reports/xunit.xml'],
+  ['find', '--', '.reports', '-maxdepth', '1', '-type', 'f', '-name', 'xunit-py*.xml', '-delete'],
+  ['coverage', 'combine'],
+  ['coverage', 'html'],
+  ['coverage', 'xml'],
+  ['coverage', 'report'],
+]
+dependency_groups = []
+depends = [
+  'py*',
+]
+only_groups = [
+  'test',
+]
+package = 'skip'
+set_env = {}
+
+[tool.tox.env.ruff]
+allowlist_externals = [
+  'sh',
+]
+commands = [
+  # Run `ruff format --diff` when `CI` env var is not empty, otherwise `ruff format`.
+  ['sh', '-euc', 'exec ruff format $\{CI:+"--diff"}', 'sh'],
+  # Run `ruff check` when `CI` env var is not empty, otherwise `ruff check --fix`.
+  ['sh', '-euc', 'ARG="--fix"; test -n "$\{CI:-}" && ARG=""; exec ruff check $\{ARG}', 'sh'],
+]
+dependency_groups = []
+depends = []
+only_groups = [
+  'lint',
+]
+package = 'skip'
+pass_env = [
+  'CI',
+]
+set_env = {}
+
+[tool.tox.env_run_base]
+commands = [
+  [
+    'pytest',
+    '--basetemp={env_tmp_dir}',
+    '--cov=manselmi.yospos',
+    '--cov-context=test',
+    '--cov-report=',
+    '--html=.reports/pytest-{env_name}.html/index.html',
+    '--junitxml=.reports/xunit-{env_name}.xml',
+    '--override-ini=junit_suite_name={env_name}',
+    { replace = 'posargs', default = [], extend = true },
+  ],
+]
+dependency_groups = [
+  'test',
+]
+depends = [
+  'clean',
+]
+package = 'wheel'
+parallel_show_output = true
+runner = 'uv-venv-lock-runner'
+set_env = { COVERAGE_FILE = '.coverage.{env_name}' }
+
+
+[tool.uv.build-backend]
+module-name = [
+  'manselmi.yospos',
+]

@@ -1,0 +1,80 @@
+# https://mise.en.dev/configuration.html
+
+
+min_version = '2026.7.11'
+
+
+[settings]
+locked = true
+lockfile = true
+lockfile_platforms = ['macos-arm64']
+unix_default_file_shell_args = 'sh -euo pipefail'
+unix_default_inline_shell_args = 'sh -euo pipefail -c'
+
+
+[tasks.build]
+run = [
+  'rm -fr -- dist',
+  'uv build --wheel',
+]
+
+# Run `lint` and `test` tox labels in parallel when `CI` env var is not empty. When the `CI` env var
+# is not empty, the `lint` tox label does not modify source files (see `pyproject.toml`), making it
+# safe to run in parallel with the `test` tox label.
+[tasks.check]
+run = """\
+if test -n "${CI:-}"; then \
+  uv run --only-group tox -- tox run-parallel -m lint test; \
+else \
+  mise run -j 1 lint ::: test; \
+fi"""
+
+[tasks.yospos]
+run = 'uv run --no-dev -- yospos'
+
+# Run `lint` tox label in parallel when `CI` env var is not empty. When the `CI` env var is not
+# empty, the `ruff` tox env does not modify source files (see `pyproject.toml`), making it safe to
+# run in parallel with the `mypy` tox env.
+[tasks.lint]
+run = """\
+if test -n "${CI:-}"; then \
+  TOX_CMD='run-parallel'; \
+else \
+  TOX_CMD='run'; \
+fi; \
+uv run --only-group tox -- tox "${TOX_CMD}" -m lint"""
+
+[tasks.lock]
+# required to correctly initialize lockfile when locked = true
+env.MISE_LOCKED = '0'
+run = [
+  'mise install',
+  'mise lock',
+  'uv lock',
+]
+
+[tasks.sync]
+run = 'uv sync'
+
+[tasks.test]
+run = 'uv run --only-group tox -- tox run-parallel -m test'
+
+[tasks.test-py]
+run = 'uv run --only-group tox -- tox run -e py'
+
+[tasks.tox]
+run = 'uv run --only-group tox -- tox'
+
+[tasks.upgrade]
+# required to correctly initialize lockfile when locked = true
+env.MISE_LOCKED = '0'
+run = [
+  'mise upgrade --local',
+  'mise lock',
+  'uv lock --upgrade',
+]
+
+
+[tools]
+python = '3.14'
+uv = 'latest'
