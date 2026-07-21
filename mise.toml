@@ -7,9 +7,10 @@ min_version = '2026.7.11'
 [settings]
 locked = true
 lockfile = true
-lockfile_platforms = ['macos-arm64']
-unix_default_file_shell_args = 'sh -euo pipefail'
-unix_default_inline_shell_args = 'sh -euo pipefail -c'
+lockfile_platforms = [
+  'linux-x64',
+  'macos-arm64',
+]
 
 
 [tasks.build]
@@ -77,4 +78,4 @@ run = [
 
 [tools]
 python = '3.14'
-uv = '0.11'
+uv = 'latest'
