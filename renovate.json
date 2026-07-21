@@ -6,34 +6,24 @@
   "packageRules": [
     {
       "matchUpdateTypes": [
-        "major",
-        "minor",
-        "patch",
-        "pin",
-        "pinDigest",
-        "digest",
-        "lockFileMaintenance",
-        "rollback",
-        "bump",
-        "replacement"
-      ],
-      "enabled": false
-    },
-    {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
         "major"
       ],
-      "enabled": true,
       "automerge": false
+    },
+    {
+      "matchPackageNames": [
+        "python"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "enabled": false
     },
     {
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
-      "enabled": true,
       "automerge": true
     }
   ],

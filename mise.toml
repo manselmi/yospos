@@ -7,10 +7,6 @@ min_version = '2026.7.11'
 [settings]
 locked = true
 lockfile = true
-lockfile_platforms = [
-  'linux-x64',
-  'macos-arm64',
-]
 
 
 [tasks.build]
@@ -77,5 +73,5 @@ run = [
 
 
 [tools]
-python = '3.14'
-uv = '0.11'
+python = '3.14.5'
+uv = '0.11.29'
