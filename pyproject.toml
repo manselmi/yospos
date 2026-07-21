@@ -5,7 +5,7 @@
 [build-system]
 build-backend = 'uv_build'
 requires = [
-  'uv-build ~= 0.11.30',
+  'uv-build ~= 0.11.29',
 ]
 
 
@@ -17,7 +17,7 @@ dev = [
 ]
 empty = []  # for tox envs in which nothing need be installed
 lint = [
-  'mypy >= 2.3.0',
+  'mypy >= 2.2.0',
   'ruff >= 0.15.22',
 ]
 test = [
@@ -44,7 +44,7 @@ authors = [
 ]
 scripts = { yospos = 'manselmi.yospos.app:app' }
 dependencies = [
-  'typer >= 0.27.0',
+  'typer >= 0.26.8',
 ]
 
 
