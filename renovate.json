@@ -6,11 +6,21 @@
   "packageRules": [
     {
       "matchUpdateTypes": [
-        "major"
+        "minor",
+        "patch"
       ],
-      "automerge": false
+      "automerge": true
     },
     {
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "automerge": true
+    },
+    {
+      "matchManagers": [
+        "mise"
+      ],
       "matchPackageNames": [
         "python"
       ],
@@ -19,12 +29,6 @@
         "minor"
       ],
       "enabled": false
-    },
-    {
-      "matchUpdateTypes": [
-        "lockFileMaintenance"
-      ],
-      "automerge": true
     }
   ],
   "lockFileMaintenance": {
