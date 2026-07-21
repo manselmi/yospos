@@ -28,6 +28,15 @@
         "minor"
       ],
       "enabled": false
+    },
+    {
+      "matchPackageNames": [
+        "python"
+      ],
+      "matchManagers": [
+        "pep621"
+      ],
+      "enabled": false
     }
   ],
   "lockFileMaintenance": {
