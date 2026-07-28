@@ -12,7 +12,6 @@ lockfile_platforms = ['linux-arm64', 'linux-x64', 'macos-arm64']
 
 
 [task_config]
-cascade = true
 shell = 'sh -euo pipefail -c'
 
 
@@ -81,4 +80,4 @@ run = [
 
 [tools]
 python = '3.14.6'
-uv = '0.11.32'
+uv = '0.11.33'
