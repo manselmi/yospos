@@ -8,14 +8,16 @@ on:
 
 defaults:
   run:
-    shell: 'bash -euo pipefail {0}'
+    shell: 'sh -euo pipefail {0}'
 
 permissions:
   contents: 'read'
 
 jobs:
   check:
-    runs-on: 'ubuntu-latest'
+    # switch to 'ubuntu-latest' when 'ubuntu-26.04' becomes latest
+    # https://github.com/actions/runner-images/issues/14226
+    runs-on: 'ubuntu-26.04'
     steps:
       - uses: 'actions/checkout@v7'
       - uses: 'jdx/mise-action@v4'

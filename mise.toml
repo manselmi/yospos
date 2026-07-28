@@ -1,12 +1,19 @@
-# https://mise.en.dev/configuration.html
+# vim: set ft=toml :
 
 
-min_version = '2026.7.11'
+# https://github.com/jdx/mise/pull/11354
+min_version = '2026.7.15'
 
 
 [settings]
 locked = true
 lockfile = true
+lockfile_platforms = ['linux-arm64', 'linux-x64', 'macos-arm64']
+
+
+[task_config]
+cascade = true
+shell = 'sh -euo pipefail -c'
 
 
 [tasks.build]
