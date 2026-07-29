@@ -22,7 +22,6 @@ jobs:
     steps:
       - name: 'Create GitHub app token'
         id: 'app-token'
-        if: 'github.ref_name == github.event.repository.default_branch'
         uses: 'actions/create-github-app-token@v3.2.0'
         with:
           client-id: '${{ vars.BUMP_VERSION_APP_CLIENT_ID }}'
