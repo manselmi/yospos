@@ -92,8 +92,8 @@ jobs:
         if: 'github.ref_name == github.event.repository.default_branch'
         env:
           COMMIT: '${{ steps.commit.outputs.commit }}'
+          MESSAGE: '${{ steps.bump-version.outputs.tag-message }}'
           TAG: '${{ steps.bump-version.outputs.tag }}'
-          TAG_MESSAGE: '${{ steps.bump-version.outputs.tag-message }}'
         run: |
           git tag --annotate --message="${MESSAGE}" -- "${TAG}" "${COMMIT}"
           git push -- "${TAG}"
