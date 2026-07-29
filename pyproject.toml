@@ -17,8 +17,8 @@ dev = [
 ]
 empty = []  # for tox envs in which nothing need be installed
 lint = [
-  'mypy >= 2.2.0',
-  'ruff >= 0.15.22',
+  'mypy >= 2.3.0',
+  'ruff >= 0.16.0',
 ]
 test = [
   'ansi2html >= 1.9.2',
@@ -35,7 +35,7 @@ tox = [
 
 [project]
 name = 'yospos'
-version = '0.1.0'
+version = "0.1.0"
 description = 'YOSPOS'
 readme = 'README.md'
 requires-python = '~= 3.14.0'
@@ -45,6 +45,36 @@ authors = [
 scripts = { yospos = 'manselmi.yospos.app:app' }
 dependencies = [
   'typer >= 0.27.0',
+]
+
+
+[tool.bumpversion]
+commit = true
+message = '[ci skip] Bump version: {current_version} → {new_version} (automation)'
+parse = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:\.(?P<dev>dev)(?P<timestamp>\d+))?'
+pre_commit_hooks = [
+  'uv lock',
+  'git add -- uv.lock',
+]
+serialize = [
+  '{major}.{minor}.{patch}.{dev}{utcnow:%Y%m%d%H%M%S}',
+  '{major}.{minor}.{patch}.{dev}{timestamp}',
+  '{major}.{minor}.{patch}',
+]
+tag = true
+tag_message = 'Bump version: {current_version} → {new_version}'
+tag_name = 'v{new_version}'
+
+[[tool.bumpversion.files]]
+filename = 'src/manselmi/yospos/_version.py'
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[tool.bumpversion.parts.dev]
+optional_value = ''
+values = [
+  '',
+  'dev',
 ]
 
 

@@ -591,17 +591,17 @@ dev = [
     { name = "ansi2html", specifier = ">=1.9.2" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.15.2" },
     { name = "junitparser", specifier = ">=5.0.1" },
-    { name = "mypy", specifier = ">=2.2.0" },
+    { name = "mypy", specifier = ">=2.3.0" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
     { name = "pytest-html", specifier = ">=4.2.0" },
-    { name = "ruff", specifier = ">=0.15.22" },
+    { name = "ruff", specifier = ">=0.16.0" },
     { name = "tox-uv-bare", specifier = ">=1.36.0" },
 ]
 empty = []
 lint = [
-    { name = "mypy", specifier = ">=2.2.0" },
-    { name = "ruff", specifier = ">=0.15.22" },
+    { name = "mypy", specifier = ">=2.3.0" },
+    { name = "ruff", specifier = ">=0.16.0" },
 ]
 test = [
     { name = "ansi2html", specifier = ">=1.9.2" },
