@@ -21,6 +21,9 @@ run = [
   'uv build --wheel',
 ]
 
+[tasks.bump-my-version]
+run = 'uv run --only-group release -- bump-my-version'
+
 # Run `lint` and `test` tox labels in parallel when `CI` env var is not empty. When the `CI` env var
 # is not empty, the `lint` tox label does not modify source files (see `pyproject.toml`), making it
 # safe to run in parallel with the `test` tox label.
