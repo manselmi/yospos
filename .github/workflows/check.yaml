@@ -15,8 +15,6 @@ permissions:
 
 jobs:
   check:
-    # switch to 'ubuntu-latest' when 'ubuntu-26.04' becomes latest
-    # https://github.com/actions/runner-images/issues/14226
     runs-on: 'ubuntu-26.04'
     steps:
       - name: 'Checkout'
