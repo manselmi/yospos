@@ -3,20 +3,19 @@
   "extends": [
     "config:recommended"
   ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "matchUpdateTypes": [
         "minor",
-        "patch"
-      ],
-      "autoApprove": true,
-      "automerge": true
-    },
-    {
-      "matchUpdateTypes": [
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest",
         "lockFileMaintenance"
       ],
-      "autoApprove": true,
       "automerge": true
     },
     {
@@ -39,7 +38,5 @@
       "enabled": false
     }
   ],
-  "lockFileMaintenance": {
-    "enabled": true
-  }
+  "platformCommit": "enabled"
 }

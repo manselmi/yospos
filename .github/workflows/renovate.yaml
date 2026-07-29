@@ -1,0 +1,46 @@
+# vim: set ft=yaml :
+
+
+name: 'Renovate'
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+      timezone: 'America/New_York'
+  workflow_dispatch:
+
+
+defaults:
+  run:
+    shell: 'sh -euo pipefail {0}'
+
+permissions:
+  contents: 'read'
+
+jobs:
+  renovate:
+    # switch to 'ubuntu-latest' when 'ubuntu-26.04' becomes latest
+    # https://github.com/actions/runner-images/issues/14226
+    runs-on: 'ubuntu-26.04'
+    environment:
+      name: 'renovate'
+      deployment: false
+    steps:
+      - name: 'Create GitHub app token'
+        id: 'app-token'
+        uses: 'actions/create-github-app-token@v3.2.0'
+        with:
+          client-id: '${{ vars.RENOVATE_APP_CLIENT_ID }}'
+          private-key: '${{ secrets.RENOVATE_APP_PRIVATE_KEY }}'
+          owner: '${{ github.repository_owner }}'
+          repositories: '${{ github.repository }}'
+      - name: 'Checkout'
+        uses: 'actions/checkout@v7.0.1'
+      - name: 'Renovate'
+        uses: 'renovatebot/github-action@v46.1.21'
+        env:
+          RENOVATE_ALLOWED_UNSAFE_EXECUTIONS: 'mise'
+          RENOVATE_REPOSITORIES: '${{ github.repository }}'
+        with:
+          configurationFile: 'renovate.json'
+          token: '${{ steps.app-token.outputs.token }}'
