@@ -21,9 +21,6 @@ run = [
   'uv build --wheel',
 ]
 
-[tasks.bump-my-version]
-run = 'uv run --only-group release -- bump-my-version'
-
 # Run `lint` and `test` tox labels in parallel when `CI` env var is not empty. When the `CI` env var
 # is not empty, the `lint` tox label does not modify source files (see `pyproject.toml`), making it
 # safe to run in parallel with the `test` tox label.
@@ -34,9 +31,6 @@ if test -n "${CI:-}"; then \
 else \
   mise run -j 1 lint ::: test; \
 fi"""
-
-[tasks.yospos]
-run = 'uv run --no-dev -- yospos'
 
 # Run `lint` tox label in parallel when `CI` env var is not empty. When the `CI` env var is not
 # empty, the `ruff` tox env does not modify source files (see `pyproject.toml`), making it safe to
@@ -79,6 +73,9 @@ run = [
   'mise lock',
   'uv lock --upgrade',
 ]
+
+[tasks.yospos]
+run = 'uv run --no-dev -- yospos'
 
 
 [tools]

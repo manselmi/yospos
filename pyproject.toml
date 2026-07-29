@@ -12,17 +12,13 @@ requires = [
 [dependency-groups]
 dev = [
   { include-group = 'lint' },
-  { include-group = 'release' },
   { include-group = 'test' },
   { include-group = 'tox' },
 ]
 empty = []  # for tox envs in which nothing need be installed
 lint = [
-  'mypy >= 2.2.0',
-  'ruff >= 0.15.22',
-]
-release = [
-  'bump-my-version >= 1.5.0',
+  'mypy >= 2.3.0',
+  'ruff >= 0.16.0',
 ]
 test = [
   'ansi2html >= 1.9.2',
@@ -53,6 +49,7 @@ dependencies = [
 
 
 [tool.bumpversion]
+commit = true
 message = '[ci skip] Bump version: {current_version} → {new_version} (automation)'
 parse = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:\.(?P<dev>dev)(?P<timestamp>\d+))?'
 pre_commit_hooks = [
@@ -64,6 +61,7 @@ serialize = [
   '{major}.{minor}.{patch}.{dev}{timestamp}',
   '{major}.{minor}.{patch}',
 ]
+tag = true
 tag_message = 'Bump version: {current_version} → {new_version}'
 tag_name = 'v{new_version}'
 

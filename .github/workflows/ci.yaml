@@ -1,0 +1,55 @@
+# vim: set ft=yaml :
+
+
+name: 'CI'
+
+on:
+  push:
+
+defaults:
+  run:
+    shell: 'sh -euo pipefail {0}'
+
+permissions:
+  contents: 'read'
+
+jobs:
+  check:
+    environment:
+      name: 'bump-version'
+      deployment: false
+    runs-on: 'ubuntu-26.04'
+    steps:
+      - name: 'Create GitHub app token'
+        id: 'app-token'
+        if: 'github.ref_name == github.event.repository.default_branch'
+        uses: 'actions/create-github-app-token@v3.2.0'
+        with:
+          client-id: '${{ vars.BUMP_VERSION_APP_CLIENT_ID }}'
+          private-key: '${{ secrets.BUMP_VERSION_APP_PRIVATE_KEY }}'
+          owner: '${{ github.repository_owner }}'
+          repositories: '${{ github.repository }}'
+      - name: 'Checkout'
+        uses: 'actions/checkout@v7.0.1'
+      - name: 'mise setup'
+        uses: 'jdx/mise-action@v4.2.3'
+      - name: 'Check'
+        run: 'mise run check'
+      - name: 'Version part'
+        id: 'version-part'
+        if: 'github.ref_name == github.event.repository.default_branch'
+        run: |
+          COMMIT_SUBJECT="$(git log --format='format:%s' --max-count=1)"
+          if printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[major]'; then
+            VERSION_PART='major'
+          elif printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[minor]'; then
+            VERSION_PART='minor'
+          else
+            VERSION_PART='patch'
+          printf '%s\n' "version-part=${VERSION_PART}" >> "${GITHUB_OUTPUT}"
+      - name: 'Bump version'
+        if: 'github.ref_name == github.event.repository.default_branch'
+        uses: 'callowayproject/bump-my-version@1.5.0'
+        with:
+          args: '--verbose -- ${{ steps.version-part.outputs.version-part }}'
+          token: '${{ steps.app-token.outputs.token }}'
