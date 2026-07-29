@@ -19,10 +19,10 @@ permissions:
 
 jobs:
   renovate:
-    runs-on: 'ubuntu-26.04'
     environment:
       name: 'renovate'
       deployment: false
+    runs-on: 'ubuntu-26.04'
     steps:
       - name: 'Create GitHub app token'
         id: 'app-token'
