@@ -47,15 +47,15 @@ jobs:
           if [ "${BRANCH}" = "${DEFAULT_BRANCH}" ]; then
             COMMIT_SUBJECT="$(git log --format='format:%s' --max-count=1)"
             if printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[major]'; then
-              VERSION_PART='major'
+              VERSION_PART=major
             elif printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[minor]'; then
-              VERSION_PART='minor'
+              VERSION_PART=minor
             else
-              VERSION_PART='patch'
+              VERSION_PART=patch
             fi
             mise run bump-my-version -- bump --verbose -- "${VERSION_PART}"
           else
-            for VERSION_PART in 'patch' 'dev'; do
+            for VERSION_PART in patch dev; do
               mise run bump-my-version -- bump --verbose --allow-dirty -- "${VERSION_PART}"
             done
           fi
@@ -96,4 +96,4 @@ jobs:
           TAG: '${{ steps.bump-version.outputs.tag }}'
         run: |
           git tag --annotate --message="${MESSAGE}" -- "${TAG}" "${COMMIT}"
-          git push -- "${TAG}"
+          git push -- origin "${TAG}"
