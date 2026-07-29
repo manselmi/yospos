@@ -14,7 +14,22 @@ permissions:
   contents: 'read'
 
 jobs:
-  ci:
+
+  check:
+    name: 'Check'
+    runs-on: 'ubuntu-26.04'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v7.0.1'
+      - name: 'mise setup'
+        uses: 'jdx/mise-action@v4.2.3'
+      - name: 'Check'
+        run: 'mise run check'
+
+  bump-version:
+    name: 'Bump version'
+    needs: ['check']
+    if: 'github.ref_name == github.event.repository.default_branch'
     environment:
       name: 'bump-version'
       deployment: false
@@ -26,16 +41,27 @@ jobs:
         with:
           client-id: '${{ vars.BUMP_VERSION_APP_CLIENT_ID }}'
           private-key: '${{ secrets.BUMP_VERSION_APP_PRIVATE_KEY }}'
+          owner: '${{ github.repository_owner }}'
           repositories: '${{ github.repository }}'
       - name: 'Checkout'
         uses: 'actions/checkout@v7.0.1'
         with:
           fetch-depth: 0
           token: '${{ steps.app-token.outputs.token }}'
+      - name: 'Configure Git user'
+        id: 'git-user'
+        env:
+          APP_SLUG: '${{ steps.app-token.outputs.app-slug }}'
+          GH_TOKEN: '${{ steps.app-token.outputs.token }}'
+        run: |
+          ACTOR="${APP_SLUG}[bot]"
+          ACTOR_ID="$(gh api -- "/users/${ACTOR}" | jq -r -- '.id')"
+          EMAIL="${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
+          git config set -- user.name "${ACTOR}"
+          git config set -- user.email "${EMAIL}"
+          printf '%s\n' "name=${ACTOR}" "email=${EMAIL}" >> "${GITHUB_OUTPUT}"
       - name: 'mise setup'
         uses: 'jdx/mise-action@v4.2.3'
-      - name: 'Check'
-        run: 'mise run check'
       - name: 'Bump version'
         id: 'bump-version'
         env:
@@ -44,10 +70,10 @@ jobs:
         run: |
           OLD_VERSION="$(mise run bump-my-version -- show -- current_version)"
           if [ "${BRANCH}" = "${DEFAULT_BRANCH}" ]; then
-            COMMIT_SUBJECT="$(git log --format='format:%s' --max-count=1)"
-            if printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[major]'; then
+            SUBJECT="$(git log --format='format:%s' --max-count=1)"
+            if printf '%s\n' "${SUBJECT}" | grep -Fq -- '[major]'; then
               VERSION_PART=major
-            elif printf '%s\n' "${COMMIT_SUBJECT}" | grep -Fq -- '[minor]'; then
+            elif printf '%s\n' "${SUBJECT}" | grep -Fq -- '[minor]'; then
               VERSION_PART=minor
             else
               VERSION_PART=patch
@@ -63,22 +89,8 @@ jobs:
           TAG_MESSAGE="Bump version: ${OLD_VERSION} → ${NEW_VERSION} (automation)"
           COMMIT_MESSAGE="[ci skip] ${TAG_MESSAGE}"
           printf '%s\n' "tag=${TAG}" "tag-message=${TAG_MESSAGE}" "commit-message=${COMMIT_MESSAGE}" >> "${GITHUB_OUTPUT}"
-      - name: 'Configure Git user'
-        id: 'git-user'
-        if: 'github.ref_name == github.event.repository.default_branch'
-        env:
-          APP_SLUG: '${{ steps.app-token.outputs.app-slug }}'
-          GH_TOKEN: '${{ steps.app-token.outputs.token }}'
-        run: |
-          ACTOR="${APP_SLUG}[bot]"
-          ACTOR_ID="$(gh api -- "/users/${ACTOR}" | jq -r -- '.id')"
-          EMAIL="${ACTOR_ID}+${ACTOR}@users.noreply.github.com"
-          git config set -- user.name "${ACTOR}"
-          git config set -- user.email "${EMAIL}"
-          printf '%s\n' "name=${ACTOR}" "email=${EMAIL}" >> "${GITHUB_OUTPUT}"
       - name: 'Commit bumped version'
         id: 'commit'
-        if: 'github.ref_name == github.event.repository.default_branch'
         uses: 'IAreKyleW00t/verified-bot-commit@v2.3.3'
         with:
           auto-stage: true
@@ -88,7 +100,6 @@ jobs:
           token: '${{ steps.app-token.outputs.token }}'
           update-local: true
       - name: 'Tag bumped version'
-        if: 'github.ref_name == github.event.repository.default_branch'
         env:
           COMMIT: '${{ steps.commit.outputs.commit }}'
           MESSAGE: '${{ steps.bump-version.outputs.tag-message }}'
