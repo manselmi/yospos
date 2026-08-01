@@ -22,7 +22,7 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v7.0.1'
       - name: 'mise setup'
-        uses: 'jdx/mise-action@v4.2.3'
+        uses: 'jdx/mise-action@v4.2.4'
       - name: 'Check'
         run: 'mise run check'
 
@@ -61,7 +61,7 @@ jobs:
           git config set -- user.email "${EMAIL}"
           printf '%s\n' "name=${ACTOR}" "email=${EMAIL}" >> "${GITHUB_OUTPUT}"
       - name: 'mise setup'
-        uses: 'jdx/mise-action@v4.2.3'
+        uses: 'jdx/mise-action@v4.2.4'
       - name: 'Bump version'
         id: 'bump-version'
         env:
