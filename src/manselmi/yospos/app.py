@@ -10,7 +10,7 @@ app = typer.Typer()
 
 @app.command()
 def main(*, shout: Annotated[bool, typer.Option("--shout")] = False) -> None:
-    print(YOSPOS.upper() if shout else YOSPOS)  # noqa:T201
+    print(YOSPOS.upper() if shout else YOSPOS)
 
 
 if __name__ == "__main__":
