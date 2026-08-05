@@ -91,7 +91,7 @@ jobs:
           printf '%s\n' "tag=${TAG}" "tag-message=${TAG_MESSAGE}" "commit-message=${COMMIT_MESSAGE}" >> "${GITHUB_OUTPUT}"
       - name: 'Commit bumped version'
         id: 'commit'
-        uses: 'IAreKyleW00t/verified-bot-commit@v2.3.3'
+        uses: 'IAreKyleW00t/verified-bot-commit@v2.3.4'
         with:
           auto-stage: true
           files: '**'
