@@ -19,14 +19,14 @@ dev = [
 empty = []  # for tox envs in which nothing need be installed
 lint = [
   'mypy >= 2.3.0',
-  'ruff >= 0.16.1',
+  'ruff >= 0.16.2',
 ]
 release = [
-  'bump-my-version >= 1.5.0',
+  'bump-my-version >= 1.5.1',
 ]
 test = [
   'ansi2html >= 1.9.2',
-  'coverage [toml] >= 7.15.3',
+  'coverage [toml] >= 7.15.4',
   'junitparser >= 5.0.1',
   'pytest >= 9.1.1',
   'pytest-cov >= 7.1.0',
@@ -96,6 +96,7 @@ skip_empty = true
 
 [tool.coverage.run]
 branch = true
+core = 'ctrace'  # required for dynamic contexts: https://coverage.readthedocs.io/en/latest/config.html#run-core
 
 [tool.coverage.xml]
 output = '.reports/coverage.xml'
