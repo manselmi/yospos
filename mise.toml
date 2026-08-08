@@ -83,4 +83,4 @@ run = 'uv run --no-dev -- yospos'
 
 [tools]
 python = '3.14.7'
-uv = '0.12.2'
+uv = '0.12.3'
