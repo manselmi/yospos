@@ -10,6 +10,9 @@ locked = true
 lockfile = true
 lockfile_platforms = ['linux-arm64', 'linux-x64', 'macos-arm64']
 
+[settings.python]
+compile = false
+
 
 [task_config]
 shell = 'sh -euo pipefail -c'
