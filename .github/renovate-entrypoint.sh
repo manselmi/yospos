@@ -18,6 +18,7 @@ curl() {
 
 export \
   MISE_INSTALL_PATH="${INSTALL_PREFIX}/bin/mise" \
+  MISE_QUIET=1 \
   UV_INSTALL_DIR="${INSTALL_PREFIX}" \
   UV_UNMANAGED_INSTALL=1
 for URL in \
