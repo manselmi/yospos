@@ -13,18 +13,18 @@ curl() {
 
 MISE_INSTALL="$(mktemp)"
 MISE_DIR="${HOME}/.local/bin"
-MISE="${MISE_DIR}/mise"
 
 curl --output "${MISE_INSTALL}" -- 'https://mise.jdx.dev/install.sh'
 chmod -- +x "${MISE_INSTALL}"
 env -- \
-  MISE_INSTALL_PATH="${MISE}" \
+  MISE_INSTALL_PATH="${MISE_DIR}/mise" \
   MISE_INSTALL_SKIP_IF_EXISTS=1 \
   MISE_QUIET=1 \
   "${MISE_INSTALL}"
+PATH="${MISE_DIR}:${PATH}"
+hash -r
 
 
 exec env -- \
   MISE_GITHUB_TOKEN="${RENOVATE_TOKEN}" \
-  PATH="${MISE_DIR}:${PATH}" \
-  renovate
+  mise exec --quiet -- renovate
