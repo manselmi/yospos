@@ -1,12 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "abandonments:recommended",
-    "docker:pinDigests",
     "helpers:pinGitHubActionDigests"
   ],
+  "abandonmentThreshold": "1 year",
   "automerge": true,
+  "dependencyDashboard": true,
   "groupName": "all dependencies",
   "groupSlug": "all",
   "lockFileMaintenance": {
@@ -15,6 +14,15 @@
   },
   "packageRules": [
     {
+      "matchDepTypes": [
+        "action"
+      ],
+      "pinDigests": true
+    },
+    {
+      "matchDepTypes": [
+        "*"
+      ],
       "matchPackageNames": [
         "*"
       ],
@@ -42,5 +50,6 @@
     }
   ],
   "platformCommit": "enabled",
+  "rebaseWhen": "behind-base-branch",
   "separateMajorMinor": false
 }
