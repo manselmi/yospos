@@ -2,7 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "helpers:pinGitHubActionDigestsToSemver"
+    "abandonments:recommended",
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigests"
   ],
   "automerge": true,
   "lockFileMaintenance": {
@@ -13,6 +15,17 @@
     {
       "matchPackageNames": [
         "*"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest",
+        "lockFileMaintenance",
+        "rollback",
+        "bump"
       ],
       "groupName": "all packages",
       "groupSlug": "all-packages"
