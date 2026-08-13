@@ -1,16 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "helpers:pinGitHubActionDigests"
-  ],
   "abandonmentThreshold": "1 year",
   "automerge": true,
   "dependencyDashboard": true,
-  "groupName": "all dependencies",
-  "groupSlug": "all",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": null
+    "schedule": [
+      "* * * * 0"
+    ]
   },
   "packageRules": [
     {
@@ -51,5 +48,8 @@
   ],
   "platformCommit": "enabled",
   "rebaseWhen": "behind-base-branch",
+  "schedule": [
+    "* * * * 1-6"
+  ],
   "separateMajorMinor": false
 }
