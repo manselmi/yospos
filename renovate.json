@@ -11,6 +11,9 @@
   },
   "packageRules": [
     {
+      "matchPackageNames": [
+        "*"
+      ],
       "groupName": "all packages",
       "groupSlug": "all-packages"
     },

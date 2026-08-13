@@ -1,14 +1,9 @@
 #!/usr/bin/env sh
 # vim: set ft=sh :
 
-# Stop at any error, treat unset vars as errors and make pipelines exit with a non-zero exit code if
-# any command in the pipeline exits with a non-zero exit code.
+# Stop at any error and treat unset vars as errors.
 set -o errexit
 set -o nounset
-
-
-INSTALL_PREFIX='/usr/local'
-INSTALLER='/tmp/installer'
 
 
 curl() {
@@ -16,19 +11,20 @@ curl() {
 }
 
 
-export \
-  MISE_INSTALL_PATH="${INSTALL_PREFIX}/bin/mise" \
-  MISE_QUIET=1 \
-  UV_INSTALL_DIR="${INSTALL_PREFIX}" \
-  UV_UNMANAGED_INSTALL=1
-for URL in \
-  'https://mise.jdx.dev/install.sh' \
-  'https://releases.astral.sh/installers/uv/latest/uv-installer.sh'
-do
-  curl --output "${INSTALLER}" -- "${URL}"
-  chmod -- +x "${INSTALLER}"
-  "${INSTALLER}"
-  rm -- "${INSTALLER}"
-done
+MISE_INSTALL="$(mktemp)"
+MISE_DIR="${HOME}/.local/bin"
+MISE="${MISE_DIR}/mise"
 
-exec renovate
+curl --output "${MISE_INSTALL}" -- 'https://mise.jdx.dev/install.sh'
+chmod -- +x "${MISE_INSTALL}"
+env -- \
+  MISE_INSTALL_PATH="${MISE}" \
+  MISE_INSTALL_SKIP_IF_EXISTS=1 \
+  MISE_QUIET=1 \
+  "${MISE_INSTALL}"
+
+
+exec env -- \
+  MISE_GITHUB_TOKEN="${RENOVATE_TOKEN}" \
+  PATH="${MISE_DIR}:${PATH}" \
+  renovate
