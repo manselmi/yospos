@@ -18,16 +18,16 @@ dev = [
 ]
 empty = []  # for tox envs in which nothing need be installed
 lint = [
-  'mypy >= 2.3.0',
-  'ruff >= 0.16.2',
+  'mypy >= 2.3.1',
+  'ruff >= 0.16.7',
 ]
 release = [
   'bump-my-version >= 1.5.1',
 ]
 test = [
-  'ansi2html >= 1.9.2',
-  'coverage [toml] >= 7.15.4',
-  'junitparser >= 5.0.1',
+  'ansi2html >= 1.9.5',
+  'coverage [toml] >= 7.16.1',
+  'junitparser >= 5.0.3',
   'pytest >= 9.1.1',
   'pytest-cov >= 7.1.0',
   'pytest-html >= 4.2.0',
@@ -48,7 +48,7 @@ authors = [
 ]
 scripts = { yospos = 'manselmi.yospos.app:app' }
 dependencies = [
-  'typer >= 0.27.1',
+  'typer >= 0.27.2',
 ]
 
 
