@@ -19,7 +19,7 @@ dev = [
 empty = []  # for tox envs in which nothing need be installed
 lint = [
   'mypy >= 2.3.1',
-  'ruff >= 0.16.7',
+  'ruff >= 0.16.8',
 ]
 release = [
   'bump-my-version >= 1.5.1',
