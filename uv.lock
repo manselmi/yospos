@@ -891,7 +891,7 @@ wheels = [
 
 [[package]]
 name = "yospos"
-version = "3.0.78"
+version = "3.0.79"
 source = { editable = "." }
 dependencies = [
     { name = "typer" },
