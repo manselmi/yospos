@@ -18,22 +18,22 @@ dev = [
 ]
 empty = []  # for tox envs in which nothing need be installed
 lint = [
-  'mypy >= 2.3.1',
-  'ruff >= 0.16.8',
+  'mypy >= 2.4.0',
+  'ruff >= 0.17.1',
 ]
 release = [
-  'bump-my-version >= 1.5.1',
+  'bump-my-version >= 1.6.3',
 ]
 test = [
   'ansi2html >= 1.9.5',
-  'coverage [toml] >= 7.16.1',
+  'coverage [toml] >= 7.16.2',
   'junitparser >= 5.0.3',
   'pytest >= 9.1.1',
   'pytest-cov >= 7.1.0',
   'pytest-html >= 4.2.0',
 ]
 tox = [
-  'tox-uv-bare >= 1.36.0',
+  'tox-uv-bare >= 1.37.0',
 ]
 
 
@@ -42,13 +42,13 @@ name = 'yospos'
 version = "3.0.82"
 description = 'YOSPOS'
 readme = 'README.md'
-requires-python = '~= 3.14.0'
+requires-python = '~= 3.15.0'
 authors = [
   { name = 'Mike Anselmi', email = 'git@manselmi.com' },
 ]
 scripts = { yospos = 'manselmi.yospos.app:app' }
 dependencies = [
-  'typer >= 0.27.2',
+  'typer >= 0.27.3',
 ]
 
 
@@ -110,11 +110,10 @@ enable_incomplete_feature = [
 install_types = false
 mypy_path = 'src'
 namespace_packages = true
-native_parser = true
 packages = [
   'manselmi',
 ]
-python_version = '3.14'  # https://github.com/python/mypy/issues/19349
+python_version = '3.15'  # https://github.com/python/mypy/issues/19349
 strict = true
 warn_unreachable = true
 
@@ -192,7 +191,7 @@ env_list = [
   'ruff',
   'mypy',
   'clean',
-  'py314',
+  'py315',
   'report',
 ]
 labels.lint = [
@@ -201,7 +200,7 @@ labels.lint = [
 ]
 labels.test = [
   'clean',
-  'py314',
+  'py315',
   'report',
 ]
 
@@ -240,8 +239,8 @@ allowlist_externals = [
   'find',
 ]
 commands = [
-  ['junitparser', 'merge', '--glob', '--', '.reports/xunit-py*.xml', '.reports/xunit.xml'],
-  ['find', '--', '.reports', '-maxdepth', '1', '-type', 'f', '-name', 'xunit-py*.xml', '-delete'],
+  ['junitparser', 'merge', '--glob', '--', '.reports/pytest-py*.xml', '.reports/pytest.xml'],
+  ['find', '--', '.reports', '-maxdepth', '1', '-type', 'f', '-name', 'pytest-py*.xml', '-delete'],
   ['coverage', 'combine'],
   ['coverage', 'html'],
   ['coverage', 'xml'],
@@ -287,7 +286,7 @@ commands = [
     '--cov-context=test',
     '--cov-report=',
     '--html=.reports/pytest-{env_name}.html/index.html',
-    '--junitxml=.reports/xunit-{env_name}.xml',
+    '--junitxml=.reports/pytest-{env_name}.xml',
     '--override-ini=junit_suite_name={env_name}',
     { replace = 'posargs', default = [], extend = true },
   ],
