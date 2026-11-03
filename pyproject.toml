@@ -39,7 +39,7 @@ tox = [
 
 [project]
 name = 'yospos'
-version = "3.0.93"
+version = "3.0.94"
 description = 'YOSPOS'
 readme = 'README.md'
 requires-python = '~= 3.15.0'
